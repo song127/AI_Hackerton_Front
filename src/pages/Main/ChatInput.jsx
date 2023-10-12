@@ -93,6 +93,9 @@ function ChatInput({
         })}
         <EnterArrowIcon
           onClick={() => {
+            if (chatting == "" || !chatting) {
+              return;
+            }
             setChatting("");
             setSelectedList(Array(4).fill(false));
             onSubmit();

@@ -279,9 +279,6 @@ function MainPage() {
             seletedList={selectedList}
             setSelectedList={setSelectedList}
             onSubmit={() => {
-              if (chatting == "" || !chatting) {
-                return;
-              }
               const message = { user: -1, text: chatting };
               let newMessages = [...messages];
               newMessages.push(message);
