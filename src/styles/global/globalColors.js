@@ -25,6 +25,7 @@ const Color = function (hex) {
 export const COLORS = {
   white: Color("#ffffff"),
   black: Color("#000000"),
+  gray_1: Color("#9292AA"),
   background: Color("rgba(250, 250, 250, 1)"),
   orange: Color("#fda942"),
   yellow_1: Color("#FFEE9E"),

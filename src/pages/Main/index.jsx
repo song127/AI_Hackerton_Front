@@ -10,6 +10,9 @@ import { LayerAlign } from "components/utils/WidgetUtils";
 import { useState } from "react";
 import { COLORS } from "styles/global/globalColors";
 import GlobalFont from "styles/global/globalFonts";
+import ChatInput from "./ChatInput";
+import RoundBtn from "components/global/RoundBtn";
+import Row from "components/utils/Row";
 
 const Title = styled.p`
   ${GlobalFont({
@@ -120,6 +123,8 @@ const UserChatBubble = styled.div`
 
   padding: 24px 21px;
   margin-top: 35px;
+
+  white-space: pre-wrap;
 `;
 
 const ChatBubble = styled.div`
@@ -155,7 +160,10 @@ const lineMarginPixel = [80, 340, 622, 924];
 
 function MainPage() {
   const [messages, setMessages] = useState([
-    { user: 0, text: "hello0sssssssssssssssssssssssssssssssssssssssssssssssssssssss" },
+    {
+      user: 0,
+      text: "hello0sssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+    },
     { user: 1, text: "hello1" },
     { user: 2, text: "hello2" },
     { user: -1, text: "user1" },
@@ -163,6 +171,8 @@ function MainPage() {
     { user: 1, text: "hello1" },
     { user: 0, text: "hello0" },
   ]);
+  const [selectedList, setSelectedList] = useState(Array(4).fill(false));
+  const [chatting, setChatting] = useState("");
 
   return (
     <BasicLayout>
@@ -241,15 +251,17 @@ function MainPage() {
             <UserLine color={COLORS.blue_1} margin={lineMarginPixel[1]} />
             <UserLine color={COLORS.red_1} margin={lineMarginPixel[2]} />
             <UserLine color={COLORS.purple_1} margin={lineMarginPixel[3]} />
-            {messages.map((value) => {
+            {messages.map((value, index) => {
               const user = value.user;
               const text = value.text;
               if (user != -1) {
                 return (
                   <ChatBubble
+                    key={index}
                     margin={marginPixel[user]}
                     backColor={colorIndex[user].backColor}
-                    borderColor={colorIndex[user].borderColor}>
+                    borderColor={colorIndex[user].borderColor}
+                  >
                     {text}
                   </ChatBubble>
                 );
@@ -258,10 +270,35 @@ function MainPage() {
               }
             })}
 
-            <Block h={80}/>
+            <Block h={80} />
           </ChatContainer>
+
+          <ChatInput
+            chatting={chatting}
+            setChatting={setChatting}
+            seletedList={selectedList}
+            setSelectedList={setSelectedList}
+            onSubmit={() => {
+              const message = { user: -1, text: chatting };
+              let newMessages = [...messages];
+              newMessages.push(message);
+              setMessages(newMessages);
+            }}
+          />
+
+          <Block h={15} />
+          <div style={{ alignSelf: "end" }}>
+            <RoundBtn>skip my turn</RoundBtn>
+          </div>
         </BackBoard>
 
+        <Block h={30}/>
+        <AllFullRow main={LayerAlign.end}>
+          <RoundBtn>Back</RoundBtn>
+
+          <Block w={12} />
+          <RoundBtn>Next</RoundBtn>
+        </AllFullRow>
         <Block h={135} />
       </InnerLayout>
     </BasicLayout>
