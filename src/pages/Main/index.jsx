@@ -52,7 +52,7 @@ const BackBoard = styled.div`
 `;
 
 function MainPage() {
-  const [pageIndex, setPageIndex] = useState(2);
+  const [pageIndex, setPageIndex] = useState(0);
 
   const [address, setAddress] = useState("");
   const [interest, setInterest] = useState("");
@@ -73,15 +73,16 @@ function MainPage() {
           <PageTitle isSelected={pageIndex == 0}>Our Team</PageTitle>
           <RightArrowIcon />
 
-          <PageTitle>Your Intro</PageTitle>
+          <PageTitle isSelected={pageIndex == 1}>Your Intro</PageTitle>
           <RightArrowIcon />
 
-          <PageTitle>Brainstorm</PageTitle>
+          <PageTitle isSelected={pageIndex == 2}>Brainstorm</PageTitle>
 
           <RightArrowIcon />
-          <PageTitle>Business Plan</PageTitle>
+          <PageTitle isSelected={pageIndex == 3}>Business Plan</PageTitle>
         </AllFullRow>
 
+        <Block h={40} />
         <BackBoard>
           {(() => {
             switch (pageIndex) {

@@ -19,8 +19,8 @@ const Container = styled.div`
           background: #fda942;
         `
       : css`
-      color: ${COLORS.gray_1}
-          border: 2px solid #aaa;
+          color: ${COLORS.gray_1};
+          border: 2px solid ${COLORS.gray_1};
 
           background: #fff;
         `;
