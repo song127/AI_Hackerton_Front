@@ -1,6 +1,5 @@
 import styled from "@emotion/styled";
 import { COLORS } from "styles/global/globalColors";
-import { useEffect, useRef } from "react";
 
 const Backboard = styled.div`
     display: flex;
@@ -8,9 +7,11 @@ const Backboard = styled.div`
     align-items: center;
     justify-content: center;
 
-    width: ${({ w }) => w};
-    height: ${({ h }) => h}px;
-    background-color: transparent;
+    width: 100%;
+    height: 100%;
+    background-color: ${COLORS.white};
+
+    border: 2px solid ${COLORS.black};
 `;
 
 const Input = styled.textarea`
@@ -44,48 +45,25 @@ const Input = styled.textarea`
     }
 
     ::-webkit-scrollbar-track {
-        margin-top: 12px;
-        margin-bottom: 12px;
         background-clip: padding-box;
     }
 `;
-
-function ElasticTextArea({
+function TextArea({
     type = "text",
-    min,
-    max,
-    width,
     value,
     setValue,
     placeholder = "Input",
-    ...props
 }) {
-    const backRef = useRef(null);
-    const inputRef = useRef(null);
-
-    useEffect(() => {
-        backRef.current.style.height = `${min}px`;
-        if (inputRef.current.scrollHeight < max) {
-            inputRef.current.style.overflowY = "hidden";
-            backRef.current.style.height = inputRef.current.scrollHeight + "px";
-        } else {
-            inputRef.current.style.overflowY = "scroll";
-            backRef.current.style.height = `${max}px`;
-        }
-    }, [value, min, max]);
-
     return (
-        <Backboard w={width} h={min} ref={backRef}>
+        <Backboard>
             <Input
-                ref={inputRef}
                 value={value}
                 type={type}
                 onChange={(e) => setValue(e.target.value)}
                 placeholder={placeholder}
-                {...props}
             />
         </Backboard>
     );
 }
 
-export default ElasticTextArea;
+export default TextArea;

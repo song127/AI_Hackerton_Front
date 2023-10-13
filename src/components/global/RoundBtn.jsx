@@ -2,7 +2,7 @@ import styled from "@emotion/styled";
 import { COLORS } from "styles/global/globalColors";
 import GlobalFont from "./../../styles/global/globalFonts";
 
-const Container = styled.div`
+const Container = styled.button`
   cursor: pointer;
 
   display: flex;

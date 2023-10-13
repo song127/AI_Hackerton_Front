@@ -65,6 +65,9 @@ function ChatInput({
         placeholder="Input"
         width={"100%"}
         onSubmit={() => {
+          if (chatting === "" || !chatting) {
+            return;
+          }
           setChatting("");
           setSelectedList(Array(4).fill(false));
           onSubmit();
@@ -93,7 +96,7 @@ function ChatInput({
         })}
         <EnterArrowIcon
           onClick={() => {
-            if (chatting == "" || !chatting) {
+            if (chatting === "" || !chatting) {
               return;
             }
             setChatting("");
