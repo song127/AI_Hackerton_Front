@@ -68,8 +68,6 @@ function ChatInput({
           if (chatting === "" || !chatting) {
             return;
           }
-          setChatting("");
-          setSelectedList(Array(4).fill(false));
           onSubmit();
         }}
       />
@@ -99,8 +97,6 @@ function ChatInput({
             if (chatting === "" || !chatting) {
               return;
             }
-            setChatting("");
-            setSelectedList(Array(4).fill(false));
             onSubmit();
           }}
         />

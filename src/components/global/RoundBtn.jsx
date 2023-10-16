@@ -12,6 +12,8 @@ const Container = styled.button`
   width: max-content;
   padding: 8px 40px;
 
+  background-color: ${({ selected }) =>
+    selected ? COLORS.gray_1.withOpacity(0.2) : COLORS.white};
   border: 2px solid ${COLORS.black};
   border-radius: 30px;
 
@@ -21,8 +23,12 @@ const Container = styled.button`
   })}
 `;
 
-function RoundBtn({ children, ...props }) {
-  return <Container {...props}>{children}</Container>;
+function RoundBtn({ selected, children, ...props }) {
+  return (
+    <Container selected={selected} {...props}>
+      {children}
+    </Container>
+  );
 }
 
 export default RoundBtn;
