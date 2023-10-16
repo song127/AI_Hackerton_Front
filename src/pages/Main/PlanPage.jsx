@@ -8,7 +8,7 @@ import AllFullRow from "components/utils/AllFullRow";
 import Block from "components/utils/Block";
 import { LayerAlign } from "components/utils/WidgetUtils";
 
-function PlanPage() {
+function PlanPage({ data }) {
   return (
     <>
       <InnerTitle>Finalized business plan for you</InnerTitle>
@@ -149,7 +149,7 @@ function PlanPage() {
         </InnerOptionValue>
       </AllFullRow>
 
-      <Block h={40}/>
+      <Block h={40} />
       <AllFullRow main={LayerAlign.center}>
         <RoundBtn>Save</RoundBtn>
       </AllFullRow>

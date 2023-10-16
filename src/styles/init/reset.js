@@ -149,11 +149,11 @@ const reset = css`
     }
 
     div {
-        -moz-user-select: none;
+        /* -moz-user-select: none;
         -webkit-user-select: none;
-        -ms-user-select: none;
-        user-select: none;
-        -o-user-select: none;
+        -ms-user-select: none; */
+        /* user-select: none; */
+        /* -o-user-select: none; */
     }
 
     body,
