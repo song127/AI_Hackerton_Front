@@ -43,11 +43,11 @@ function IntroPage({
         <SizedBox w={680} h={40}>
           {addressChecked ? (
             <Row fullWidth cross={LayerAlign.center}>
-              <Wrapper>
+              {/* <Wrapper>
                 <ImageLoader w={60} h={60} src={userData.img} />
-              </Wrapper>
+              </Wrapper> */}
 
-              <Block w={22} />
+              {/* <Block w={22} /> */}
               <InnerOptionValue>{userData.username}</InnerOptionValue>
             </Row>
           ) : (

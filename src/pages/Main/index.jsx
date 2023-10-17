@@ -80,12 +80,12 @@ function MainPage() {
     if (result) {
       if (address === "") return;
 
-      const img = result.profileImage;
+      // const img = result.profileImage;
       const username = result.profileName;
       const linked = result.linkedin_summary;
 
       setUserData({
-        img,
+        // img,
         username,
         linked,
       });
@@ -153,6 +153,7 @@ function MainPage() {
                     selectedIndex={selectedIndex}
                     setSelectedIndex={setSelectedIndex}
                     brainPageIndex={brainPageIndex}
+                    parentIndex={pageIndex}
                     reGen={generateIdeas}
                     setConclusionData={setConclusionData}
                   />

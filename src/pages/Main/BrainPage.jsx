@@ -88,25 +88,13 @@ const colorIndex = [
 const marginPixel = [0, 112, 386, 534];
 const lineMarginPixel = [80, 340, 622, 924];
 
-const testMessages = [
-  {
-    user: 0,
-    text: "hello0sssssssssssssssssssssssssssssssssssssssssssssssssssssss",
-  },
-  { user: 1, text: "hello1" },
-  { user: 2, text: "hello2" },
-  { user: -1, text: "user1" },
-  { user: 3, text: "hello3" },
-  { user: 1, text: "hello1" },
-  { user: 0, text: "hello0" },
-];
-
 function BrainPage({
   ideas,
   selectedIndex,
   setSelectedIndex,
   brainPageIndex,
   setBrainPageIndex,
+  parentIndex,
   reGen,
   setConclusionData,
 }) {
@@ -122,22 +110,47 @@ function BrainPage({
   const api = new ServerProvider();
 
   const getChatting = async ({ input = "" }) => {
-    const dialog = {};
+    const dialog = [];
 
     messages.forEach((value) => {
-      dialog[value.user] = value.text;
+      const newDialog = {};
+      newDialog[value.user] = value.text;
+      dialog.push(newDialog);
     });
 
+    let speaker_list = [];
+    selectedList.forEach((value, index) => {
+      if (value) {
+        speaker_list.push(index);
+      }
+    });
+
+    console.log('dialog');
+    console.log(dialog);
     const response = await api.dialog({
       log: {
         service_name: ideas[selectedIndex].service_name,
         problem: ideas[selectedIndex].problem,
-        service_idea: ideas[selectedIndex].solution,
-        dialog,
+        service_idea: ideas[selectedIndex].service_idea,
+        dialog: [],
       },
-      human_input: input,
-      speaker_list: [],
+
+      input,
+      speaker: speaker_list,
     });
+
+    const test = {
+      "log": {
+          "service_name": "AI Resume Builder",
+          "problem": "Finding a job can be a daunting task, especially update their resumes to fit each job application.",
+          "service_idea": "An AI-powered platform that automatically generate requirements, saving time and improving accuracy.",
+          "dialog": [
+               {"0": "I have some concerns about the AI-powered resume builder idea."}
+          ]
+        },
+      "human_input": "",
+      "speaker_list": []
+    }
 
     if (response) {
       setIsTalking(true);
@@ -154,10 +167,12 @@ function BrainPage({
   };
 
   const getConclusion = async () => {
-    const dialog = {};
+    const dialog = [];
 
     messages.forEach((value) => {
-      dialog[value.user] = value.text;
+      const newDialog = {};
+      newDialog[value.user] = value.text;
+      dialog.push(newDialog);
     });
 
     const response = await api.conclusion({
@@ -172,23 +187,18 @@ function BrainPage({
     setConclusionData(response);
   };
 
-  const aiChattingTest = async () => {
-    await sleep(1000);
-    const message = testMessages[messages.length];
-    if (message) {
-      setIsTyping(true);
-      let newMessages = [...messages];
-      newMessages.push(message);
-      setMessages(newMessages);
-    }
-  };
-
   useEffect(() => {
     if (brainPageIndex == 1) {
-      if (!isTyping) aiChattingTest();
-      else {
-        if (messages[messages.length - 1].user == -1) {
-          aiChattingTest();
+      if (!isTyping) {
+        if(isTalking) {
+          console.log("Second");
+
+          getChatting({ input: "" });
+        }
+      } else {
+        if (messages[messages.length - 1].user === 4) {
+          console.log("Third");
+          getChatting({ input: chatting });
         }
       }
     }
@@ -196,9 +206,16 @@ function BrainPage({
 
   useEffect(() => {
     if (brainPageIndex == 1) {
-      aiChattingTest();
+      console.log("First");
+      getChatting({ input: "" });
     }
   }, [brainPageIndex]);
+
+  useEffect(() => {
+    if(parentIndex === 3) {
+      getConclusion();
+    }
+  }, [parentIndex]);
 
   if (brainPageIndex === 0) {
     return (
@@ -222,7 +239,7 @@ function BrainPage({
               <AllFullRow>
                 <InnerOption>Service Idea:</InnerOption>
                 <Block w={10} />
-                <InnerOptionValue>{value.solution}</InnerOptionValue>
+                <InnerOptionValue>{value.service_idea}</InnerOptionValue>
               </AllFullRow>
 
               <Block h={12} />
@@ -239,6 +256,16 @@ function BrainPage({
             </>
           );
         })}
+
+        <Block h={40} />
+        <AllFullRow main={LayerAlign.center}>
+          <RoundBtn
+            onClick={() => {
+              reGen();
+            }}>
+            Re-generate
+          </RoundBtn>
+        </AllFullRow>
       </>
     );
   } else {
@@ -251,26 +278,22 @@ function BrainPage({
           <InnerOption>Service Name:</InnerOption>
 
           <Block w={4} />
-          <InnerOptionValue>MedBot Analytics</InnerOptionValue>
+          <InnerOptionValue>
+            {ideas[selectedIndex].service_name}
+          </InnerOptionValue>
         </AllFullRow>
         <AllFullRow>
           <InnerOption>Problem:</InnerOption>
 
           <Block w={4} />
-          <InnerOptionValue>
-            Ineffective tracking and predictive analysis of patient health,
-            leading to delayed treatments.
-          </InnerOptionValue>
+          <InnerOptionValue>{ideas[selectedIndex].problem}</InnerOptionValue>
         </AllFullRow>
         <AllFullRow>
           <InnerOption>Service Idea:</InnerOption>
 
           <Block w={4} />
           <InnerOptionValue>
-            Develop an AI-driven platform that uses machine learning to predict
-            potential health issues based on patient medical history, current
-            vitals, and other relevant data, enabling proactive medical
-            treatments.
+            {ideas[selectedIndex].service_idea}
           </InnerOptionValue>
         </AllFullRow>
 
@@ -311,7 +334,7 @@ function BrainPage({
           {messages.map((value, index) => {
             const user = value.user;
             const text = value.text;
-            if (user !== -1) {
+            if (user !== 4) {
               return (
                 <ChatBubble
                   key={index}
@@ -344,9 +367,11 @@ function BrainPage({
             newMessages.push(message);
             setMessages(newMessages);
 
+            console.log("Input GO");
+
             await getChatting({ input: chatting });
             setChatting("");
-            setSelectedList(Array(4));
+            setSelectedList(Array(4).fill(false));
           }}
         />
 
