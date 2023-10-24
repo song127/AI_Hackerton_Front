@@ -81,7 +81,7 @@ function MainPage() {
       if (address === "") return;
 
       // const img = result.profileImage;
-      const username = result.profileName;
+      const username = result.profile_name;
       const linked = result.linkedin_summary;
 
       setUserData({

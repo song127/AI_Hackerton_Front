@@ -48,6 +48,7 @@ function IntroPage({
               </Wrapper> */}
 
               {/* <Block w={22} /> */}
+              {console.log(userData)}
               <InnerOptionValue>{userData.username}</InnerOptionValue>
             </Row>
           ) : (

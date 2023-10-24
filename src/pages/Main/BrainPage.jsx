@@ -188,7 +188,7 @@ function BrainPage({
   };
 
   useEffect(() => {
-    if (brainPageIndex == 1) {
+    if (brainPageIndex === 1) {
       if (!isTyping) {
         if(isTalking) {
           console.log("Second");
@@ -225,7 +225,7 @@ function BrainPage({
         <Block h={40} />
         {ideas.map((value, index) => {
           return (
-            <>
+            <div key={index}>
               <AllFullRow>
                 <InnerOption>Service Name:</InnerOption>
                 <Block w={10} />
@@ -253,7 +253,7 @@ function BrainPage({
                 </RoundBtn>
               </AllFullRow>
               <Block h={60} />
-            </>
+            </div>
           );
         })}
 

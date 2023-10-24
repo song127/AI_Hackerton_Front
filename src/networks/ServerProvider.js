@@ -1,12 +1,10 @@
 import axios from "axios";
 
-const baseUrl = "https://c391a9ac9cc4.ngrok.app/";
-// const baseUrl = "https://local:8010";
+const baseUrl = "http://localhost:8010";
 
 class ServerProvider {
   async checkBio({ url }) {
     try {
-      throw "ERORR";
       const api = axios.create({
         baseURL: baseUrl,
         headers: {
@@ -23,7 +21,7 @@ class ServerProvider {
       // return false;
       return {
         // profileImage: "https:",
-        profileName: "Soomin Hwang",
+        profileName: "string",
         linkedin_summary: "string",
       };
     }
