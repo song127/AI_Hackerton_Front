@@ -19,6 +19,10 @@ import { Profile } from "components/global/Profile";
 import { sleep } from "utils/utilsFunctions";
 import TypingAnimation from "components/global/TypingAnimation";
 import ServerProvider from "networks/ServerProvider";
+import { ReactComponent as Pat } from "assets/icons/pat.svg";
+import { ReactComponent as Lily } from "assets/icons/lily.svg";
+import { ReactComponent as Steve } from "assets/icons/steve.svg";
+import { ReactComponent as Casey } from "assets/icons/casey.svg";
 
 const ChatContainer = styled.div`
   position: relative;
@@ -98,7 +102,7 @@ function BrainPage({
   reGen,
   setConclusionData,
 }) {
-  const [isTalking, setIsTalking] = useState(false);
+  const [isTalking, setIsTalking] = useState(true);
   const [isTyping, setIsTyping] = useState(false);
 
   // 0: yellow, 1: blue, 2: red, 3: purple, -1: user
@@ -125,14 +129,14 @@ function BrainPage({
       }
     });
 
-    console.log('dialog');
-    console.log(dialog);
+    console.log('speaker_list');
+    console.log(speaker_list);
     const response = await api.dialog({
       log: {
         service_name: ideas[selectedIndex].service_name,
         problem: ideas[selectedIndex].problem,
         service_idea: ideas[selectedIndex].service_idea,
-        dialog: [],
+        dialog,
       },
 
       input,
@@ -157,6 +161,9 @@ function BrainPage({
       setIsTyping(true);
       const message = { user: response.speaker, text: response.contents };
       let newMessages = [...messages];
+      if (input !== "") {
+        newMessages.push({ user: 4, text: input });
+      } 
       newMessages.push(message);
       setMessages(newMessages);
 
@@ -183,6 +190,8 @@ function BrainPage({
         dialog,
       },
     });
+
+    console.log(response)
 
     setConclusionData(response);
   };
@@ -256,16 +265,6 @@ function BrainPage({
             </div>
           );
         })}
-
-        <Block h={40} />
-        <AllFullRow main={LayerAlign.center}>
-          <RoundBtn
-            onClick={() => {
-              reGen();
-            }}>
-            Re-generate
-          </RoundBtn>
-        </AllFullRow>
       </>
     );
   } else {
@@ -304,23 +303,31 @@ function BrainPage({
         <AllFullRow main={LayerAlign.center}>
           <Block w={21} />
           <Column>
-            <Profile color={COLORS.yellow_1} />
+            <Profile color={COLORS.yellow_1}>
+                <Pat />
+            </Profile>
             <ProfileText>Pat(VC)</ProfileText>
           </Column>
 
           <Block w={108} />
           <Column>
-            <Profile color={COLORS.blue_1} />
+            <Profile color={COLORS.blue_1}>
+                <Lily />
+            </Profile>
             <ProfileText>Lily(VC)</ProfileText>
           </Column>
           <Block w={108} />
           <Column>
-            <Profile color={COLORS.red_1} />
+            <Profile color={COLORS.red_1}>
+                <Steve />
+            </Profile>
             <ProfileText>Steve(Tech Expert)</ProfileText>
           </Column>
           <Block w={108} />
           <Column>
-            <Profile color={COLORS.purple_1} />
+            <Profile color={COLORS.purple_1}>
+                <Casey />
+            </Profile>
             <ProfileText>Casey(Consumer)</ProfileText>
           </Column>
         </AllFullRow>
@@ -356,29 +363,34 @@ function BrainPage({
           <Block h={80} />
         </ChatContainer>
 
-        <ChatInput
-          chatting={chatting}
-          setChatting={setChatting}
-          seletedList={selectedList}
-          setSelectedList={setSelectedList}
-          onSubmit={async () => {
-            const message = { user: 4, text: chatting };
-            let newMessages = [...messages];
-            newMessages.push(message);
-            setMessages(newMessages);
-
-            console.log("Input GO");
-
-            await getChatting({ input: chatting });
-            setChatting("");
-            setSelectedList(Array(4).fill(false));
-          }}
-        />
-
-        <Block h={15} />
-        <div style={{ alignSelf: "end" }}>
-          <RoundBtn>skip my turn</RoundBtn>
-        </div>
+        {!isTalking ?
+            <>
+                <ChatInput
+                chatting={chatting}
+                setChatting={setChatting}
+                seletedList={selectedList}
+                setSelectedList={setSelectedList}
+                onSubmit={async () => {
+                    const message = { user: 4, text: chatting };
+                    let newMessages = [...messages];
+                    newMessages.push(message);
+                    setMessages(newMessages);
+        
+                    console.log("Input GO");
+        
+                    await getChatting({ input: chatting });
+                    setChatting("");
+                    setSelectedList(Array(4).fill(false));
+                }}
+                />
+                <Block h={15} />
+                <div style={{ alignSelf: "end" }}>
+                    <RoundBtn onClick={async () => {
+                        await getChatting({ input: '' });
+                    }}>skip my turn</RoundBtn>
+                </div>
+            </>
+        : null }
       </>
     );
   }

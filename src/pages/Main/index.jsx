@@ -13,7 +13,7 @@ import TeamPage from "./TeamPage";
 import IntroPage from "./IntroPage";
 import PlanPage from "./PlanPage";
 import PageTitle from "components/global/PageTitle";
-import { ReactComponent as RightArrow } from "asssets/icons/ic-right_arrow.svg";
+import { ReactComponent as RightArrow } from "assets/icons/ic-right_arrow.svg";
 import ServerProvider from "networks/ServerProvider";
 
 const RightArrowIcon = styled(RightArrow)`

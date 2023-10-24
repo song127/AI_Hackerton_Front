@@ -13,6 +13,7 @@ function PlanPage({ data }) {
   const [datas, setDatas] = useState(null);
 
   useEffect(() => {
+    console.log(data);
     const newData = Object.entries(data).map(([key, value]) => {
       return { title: key, content: value };
     });
