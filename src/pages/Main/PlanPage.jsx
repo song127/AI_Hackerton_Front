@@ -10,14 +10,11 @@ import { LayerAlign } from "components/utils/WidgetUtils";
 import { useEffect, useState } from "react";
 
 function PlanPage({ data }) {
-  const [datas, setDatas] = useState(null);
-
-  useEffect(() => {
-    const newData = Object.entries(data).map(([key, value]) => {
-      return { title: key, content: value };
-    });
-    setDatas(newData);
-  }, data);
+  const newData = Object.entries(data).map(([key, value]) => {
+    return { title: key, content: value };
+  });
+  setDatas(newData);
+  const [datas, setDatas] = useState(newData);
 
   return (
     <>

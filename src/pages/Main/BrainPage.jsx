@@ -93,10 +93,8 @@ function BrainPage({
   selectedIndex,
   setSelectedIndex,
   brainPageIndex,
-  setBrainPageIndex,
-  parentIndex,
   reGen,
-  setConclusionData,
+  setResultMessages,
 }) {
   const [isTalking, setIsTalking] = useState(false);
   const [isTyping, setIsTyping] = useState(false);
@@ -125,8 +123,6 @@ function BrainPage({
       }
     });
 
-    console.log('dialog');
-    console.log(dialog);
     const response = await api.dialog({
       log: {
         service_name: ideas[selectedIndex].service_name,
@@ -134,23 +130,9 @@ function BrainPage({
         service_idea: ideas[selectedIndex].service_idea,
         dialog: [],
       },
-
       input,
       speaker: speaker_list,
     });
-
-    const test = {
-      "log": {
-          "service_name": "AI Resume Builder",
-          "problem": "Finding a job can be a daunting task, especially update their resumes to fit each job application.",
-          "service_idea": "An AI-powered platform that automatically generate requirements, saving time and improving accuracy.",
-          "dialog": [
-               {"0": "I have some concerns about the AI-powered resume builder idea."}
-          ]
-        },
-      "human_input": "",
-      "speaker_list": []
-    }
 
     if (response) {
       setIsTalking(true);
@@ -159,6 +141,7 @@ function BrainPage({
       let newMessages = [...messages];
       newMessages.push(message);
       setMessages(newMessages);
+      setResultMessages(newMessages);
 
       if (response.is_finished) {
         setIsTalking(false);
@@ -166,31 +149,10 @@ function BrainPage({
     }
   };
 
-  const getConclusion = async () => {
-    const dialog = [];
-
-    messages.forEach((value) => {
-      const newDialog = {};
-      newDialog[value.user] = value.text;
-      dialog.push(newDialog);
-    });
-
-    const response = await api.conclusion({
-      log: {
-        service_name: ideas[selectedIndex].service_name,
-        problem: ideas[selectedIndex].problem,
-        service_idea: ideas[selectedIndex].solution,
-        dialog,
-      },
-    });
-
-    setConclusionData(response);
-  };
-
   useEffect(() => {
     if (brainPageIndex == 1) {
       if (!isTyping) {
-        if(isTalking) {
+        if (isTalking) {
           console.log("Second");
 
           getChatting({ input: "" });
@@ -210,12 +172,6 @@ function BrainPage({
       getChatting({ input: "" });
     }
   }, [brainPageIndex]);
-
-  useEffect(() => {
-    if(parentIndex === 3) {
-      getConclusion();
-    }
-  }, [parentIndex]);
 
   if (brainPageIndex === 0) {
     return (
@@ -366,6 +322,7 @@ function BrainPage({
             let newMessages = [...messages];
             newMessages.push(message);
             setMessages(newMessages);
+            setResultMessages(newMessages);
 
             console.log("Input GO");
 
